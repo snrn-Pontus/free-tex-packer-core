@@ -135,10 +135,6 @@ function prepareData(data, options) {
         }
     });
 
-    // if (animations.length) {
-    //     ret[0].first = true;
-    //     ret[ret.length - 1].last = true;
-    // }
 
     if (ret.length) {
         ret[0].first = true;

@@ -58,7 +58,7 @@
     "description": "pixi.js format with animations",
     "allowTrim": true,
     "allowRotation": true,
-    "template": "animationExporter.hbs",
+    "template": "PixiAnimations.mst",
     "fileExt": "json",
     "predefined": true
   },
