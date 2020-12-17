@@ -102,6 +102,7 @@ export enum PackerExporterType {
   CSS = 'Css',
   OLD_CSS = 'OldCss',
   PIXI = 'Pixi',
+  PIXI_ANIMATIONS = 'PixiAnimations',
   PHASER_HASH = 'PhaserHash',
   PHASER_ARRAY = 'PhaserArray',
   PHASER3 = 'Phaser3',

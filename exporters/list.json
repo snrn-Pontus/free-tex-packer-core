@@ -54,6 +54,15 @@
     "predefined": true
   },
   {
+    "type": "PixiAnimations",
+    "description": "pixi.js format with animations",
+    "allowTrim": true,
+    "allowRotation": true,
+    "template": "animationExporter.hbs",
+    "fileExt": "json",
+    "predefined": true
+  },
+  {
     "type": "GodotAtlas",
     "description": "Godot Atlas format",
     "allowTrim": true,

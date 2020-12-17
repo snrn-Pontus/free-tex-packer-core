@@ -45,7 +45,7 @@ mustache.Formatters = {
 
 function getExporterByType(type) {
     type = type.toLowerCase();
-    
+
     for(let item of list) {
         if(item.type.toLowerCase() == type) {
             return item;
@@ -64,6 +64,7 @@ function prepareData(data, options) {
     opt.base64Prefix = options.textureFormat == "png" ? "data:image/png;base64," : "data:image/jpeg;base64,";
 
     let ret = [];
+    let animations = {};
 
     for(let item of data) {
 
@@ -86,9 +87,9 @@ function prepareData(data, options) {
         let frame = {x: item.frame.x, y: item.frame.y, w: item.frame.w, h: item.frame.h, hw: item.frame.w/2, hh: item.frame.h/2};
         let spriteSourceSize = {x: item.spriteSourceSize.x, y: item.spriteSourceSize.y, w: item.spriteSourceSize.w, h: item.spriteSourceSize.h};
         let sourceSize = {w: item.sourceSize.w, h: item.sourceSize.h};
-        
+
         let trimmed = item.trimmed;
-        
+
         if(item.trimmed && options.trimMode === 'crop') {
             trimmed = false;
             spriteSourceSize.x = 0;
@@ -123,28 +124,43 @@ function prepareData(data, options) {
             trimmed: trimmed
         });
 
+        let parts = name.split("_");
+        animations[parts[0]] = animations[parts[0]] || [];
+        animations[parts[0]].push(name);
     }
 
-    if(ret.length) {
+    Object.keys(animations).forEach((key) => {
+        if (animations[key].length === 1) {
+            delete animations[key];
+        }
+    });
+
+    // if (animations.length) {
+    //     ret[0].first = true;
+    //     ret[ret.length - 1].last = true;
+    // }
+
+    if (ret.length) {
         ret[0].first = true;
         ret[ret.length-1].last = true;
     }
 
-    return {rects: ret, config: opt};
+    return {rects: ret,animations: animations, config: opt};
 }
 
 function startExporter(exporter, data, options) {
-    let {rects, config} = prepareData(data, options);
+    let {rects, animations, config} = prepareData(data, options);
     let renderOptions = {
         rects: rects,
+        animations: animations,
         config: config,
         appInfo: options.appInfo || appInfo
     };
-    
+
     if(exporter.content) {
         return finishExporter(exporter, renderOptions);
     }
-    
+
     let filePath;
     if(exporter.predefined) {
         filePath = path.join(__dirname, exporter.template);
@@ -152,7 +168,7 @@ function startExporter(exporter, data, options) {
     else {
         filePath = exporter.template;
     }
-    
+
     exporter.content = fs.readFileSync(filePath).toString();
     return finishExporter(exporter, renderOptions);
 }
