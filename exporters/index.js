@@ -148,7 +148,7 @@ function startExporter(exporter, data, options) {
     let {rects, animations, config} = prepareData(data, options);
     let renderOptions = {
         rects: rects,
-        animations: animations,
+        animations: JSON.stringify(animations),
         config: config,
         appInfo: options.appInfo || appInfo
     };
